@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Border Animation",
+  "version": "1.0",
+  "description": "Adds animated borders on hover",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "action": {
+    "default_popup": "src/popup.html",
+    "default_icon": "icon.png"
+  },
+  "host_permissions": ["<all_urls>"],
+  "commands": {
+    "toggle-border-animation": {
+      "suggested_key": {
+        "default": "Alt+Shift+B"
+      },
+      "description": "Toggle border animation"
+    }
+  }
+}
