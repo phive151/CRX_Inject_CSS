@@ -24,7 +24,7 @@ A Chrome extension that adds beautiful animated gradient borders to any element 
 ### From Source
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/hover-border-extension
+git clone https://github.com/phive151/hover-border-extension
 cd hover-border-extension
 ```
 
