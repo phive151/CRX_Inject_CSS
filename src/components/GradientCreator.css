@@ -1,0 +1,90 @@
+@import "tailwindcss";
+@plugin '@tailwindcss/typography';
+@plugin 'daisyui' {
+  themes: all;
+}
+
+@layer components {
+  .gradientCreator {
+    @apply w-full h-full;
+  }
+
+  .gradientPreview {
+    @apply min-h-[400px] relative;
+    transition: background 0.3s ease;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    transform-origin: center;
+    background-size: 100% 100%;
+  }
+
+  .playing {
+    background: transparent !important;
+  }
+
+  /* Button styles */
+  .gradientPreview .btn {
+    @apply relative overflow-visible isolate font-medium capitalize transition-all;
+  }
+
+  .gradientPreview .btn::before {
+    content: "";
+    @apply absolute -inset-[3px] rounded-[calc(var(--radius-field,0.5rem)+3px)] opacity-0 transition-opacity duration-300 -z-10;
+    background: conic-gradient(from var(--angle), var(--gradient-colors));
+    animation: rotate var(--duration, 3s) linear infinite;
+    padding: 3px;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: exclude;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
+  .gradientPreview .btn::after {
+    content: "";
+    @apply absolute -inset-[6px] rounded-[calc(var(--radius-field,0.5rem)+3px)] opacity-0 transition-opacity duration-300 -z-30;
+    background: conic-gradient(from var(--angle), var(--gradient-colors));
+    animation: rotate var(--duration, 3s) linear infinite;
+    padding: 8px;
+    inset: -6px;
+    filter: blur(10px) opacity(0.1);
+  }
+
+  .gradientPreview .btn:hover::after,
+  .gradientPreview .btn:hover::before {
+    box-shadow: 0 0 50px 50px var(--gradient-colors);
+    cursor: pointer;
+    @apply opacity-100;
+  }
+
+  .gradientPreview .btn:hover {
+    @apply -translate-y-0.5;
+  }
+
+  .gradientPreview .btn:active {
+    @apply translate-y-0;
+  }
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotate {
+  from {
+    --angle: 0deg;
+  }
+  to {
+    --angle: 360deg;
+  }
+}
+
+/* Theme customization */
+@theme {
+  --radius-field: 0.5rem;
+  --duration: 3s;
+}

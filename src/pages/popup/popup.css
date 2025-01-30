@@ -1,0 +1,141 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: all;
+}
+
+@layer components {
+  body {
+    @apply m-0 p-0 w-[400px] min-h-[600px];
+  }
+
+  .popup-container {
+    @apply w-full min-h-[600px] min-w-[400px] flex flex-col;
+  }
+
+  .button-grid {
+    @apply grid grid-cols-2 gap-4 p-4 flex-1;
+  }
+
+  /* Make the button styles more specific to the popup */
+  .popup-container .btn {
+    @apply relative overflow-visible isolate font-medium capitalize transition-all;
+  }
+
+  .popup-container .btn::before {
+    content: "";
+    @apply absolute -inset-[3px] rounded-[calc(var(--radius-field,0.5rem)+3px)] opacity-0 transition-opacity duration-300 -z-10;
+    background: conic-gradient(from var(--angle), var(--gradient-colors));
+    animation: rotate var(--duration, 3s) linear infinite;
+    padding: 3px;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: exclude;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
+
+  .popup-container .btn::after {
+    content: "";
+    @apply absolute -inset-[6px] rounded-[calc(var(--radius-field,0.5rem)+3px)] opacity-0 transition-opacity duration-300 -z-30;
+    background: conic-gradient(from var(--angle), var(--gradient-colors));
+    animation: rotate var(--duration, 3s) linear infinite;
+    padding: 8px;
+    inset: -6px;
+  }
+
+  .popup-container .btn:hover::after,
+  .popup-container .btn:hover::before {
+    filter: blur(10px) opacity(0.2);
+    cursor: pointer;
+    @apply opacity-100;
+  }
+
+  .popup-container .btn:hover {
+    @apply -translate-y-0.5;
+  }
+
+  .popup-container .btn:active {
+    @apply translate-y-0;
+  }
+  .popup-container .reset-button-container {
+    @apply px-4 pb-4 mt-auto;
+  }
+
+  .popup-container .alert-container {
+    @apply px-4 mb-4;
+  }
+
+  .popup-container .alert-dash {
+    @apply shadow-lg;
+  }
+}
+
+@layer utilities {
+  .popup-container .btn-rainbow {
+    --gradient-colors: rgba(255, 0, 0, 1), rgba(255, 136, 0, 1),
+      rgba(255, 255, 0, 1), rgba(0, 255, 0, 1), rgba(0, 255, 255, 1),
+      rgba(0, 0, 255, 1), rgba(255, 0, 255, 1), rgba(255, 0, 0, 1);
+    --duration: 3s;
+    --transparency-spread: 90%;
+  }
+
+  .popup-container .btn-neon {
+    --gradient-colors: rgba(255, 0, 255, 1), rgba(149, 0, 255, 1),
+      rgba(0, 255, 255, 1), rgba(255, 0, 255, 1);
+    --duration: 2s;
+    --transparency-spread: 90%;
+  }
+
+  .popup-container .btn-cyber {
+    --gradient-colors: rgba(0, 255, 0, 1), rgba(0, 102, 0, 1),
+      rgba(0, 255, 0, 1), rgba(153, 255, 153, 1);
+    --duration: 4s;
+    --transparency-spread: 90%;
+  }
+
+  .popup-container .btn-fire {
+    --gradient-colors: rgba(255, 0, 0, 1), rgba(255, 102, 0, 1),
+      rgba(255, 204, 0, 1), rgba(255, 0, 0, 1);
+    --duration: 2.5s;
+    --transparency-spread: 90%;
+  }
+
+  .popup-container .btn-gold {
+    --gradient-colors: rgba(255, 215, 0, 1), rgba(255, 165, 0, 1),
+      rgba(255, 219, 77, 1), rgba(255, 215, 0, 1);
+    --duration: 3.5s;
+    --transparency-spread: 90%;
+  }
+
+  .popup-container .btn-ocean {
+    --gradient-colors: rgba(0, 255, 255, 1), rgba(0, 153, 255, 1),
+      rgba(0, 0, 255, 1), rgba(0, 255, 255, 1);
+    --duration: 3s;
+    --transparency-spread: 90%;
+  }
+}
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotate {
+  from {
+    --angle: 0deg;
+  }
+  to {
+    --angle: 360deg;
+  }
+}
+
+.alert-container {
+  @apply px-4 mb-4;
+}
+
+.alert-dash {
+  @apply shadow-lg;
+}

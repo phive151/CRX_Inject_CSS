@@ -1,0 +1,130 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: all;
+}
+
+html,
+body,
+#options {
+  @apply w-full h-full m-0 p-0 overflow-x-hidden;
+}
+
+/* Remove the options-container class and apply styles directly */
+#root {
+  @apply w-screen min-h-screen;
+}
+
+@layer components {
+  .options-wrapper {
+    @apply w-full min-h-screen bg-base-100;
+  }
+
+  .gradient-creator {
+    @apply w-full h-full;
+  }
+
+  .gradient-preview {
+    @apply min-h-[400px] relative;
+    transition: background 0.3s ease;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    background-size: 200% 200%;
+  }
+
+  /* Add a checkerboard background to show transparency */
+  .gradient-preview::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(45deg, #808080 25%, transparent 25%),
+      linear-gradient(-45deg, #808080 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #808080 75%),
+      linear-gradient(-45deg, transparent 75%, #808080 75%);
+    background-size: 20px 20px;
+    background-position:
+      0 0,
+      0 10px,
+      10px -10px,
+      -10px 0px;
+    z-index: -1;
+  }
+
+  .color-circle {
+    @apply z-10;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+  }
+
+  .color-circle:hover {
+    transform: scale(1.1);
+  }
+
+  .color-picker-card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  @keyframes rotate {
+    from {
+      background-position: 0% 50%;
+    }
+    to {
+      background-position: 360% 50%;
+    }
+  }
+
+  .gradient-preview.playing {
+    animation: rotate 3s linear infinite;
+  }
+
+  /* Stop animation when paused */
+  .gradient-preview:not(.playing) {
+    animation: none;
+  }
+
+  /* Color picker customization */
+  .solid-colorful {
+    @apply w-full;
+  }
+
+  .solid-colorful__hue {
+    @apply h-8 rounded-lg;
+  }
+
+  .solid-colorful__alpha {
+    @apply h-8 rounded-lg;
+  }
+
+  /* Ensure the gradient creator fills available space */
+  .card-body:has(.gradient-creator) {
+    @apply p-0;
+  }
+
+  .color-preview {
+    @apply bg-base-200;
+    background-image: linear-gradient(45deg, #808080 25%, transparent 25%),
+      linear-gradient(-45deg, #808080 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #808080 75%),
+      linear-gradient(-45deg, transparent 75%, #808080 75%);
+    background-size: 20px 20px;
+    background-position:
+      0 0,
+      0 10px,
+      10px -10px,
+      -10px 0px;
+  }
+
+  .color-preview-card {
+    @apply bg-base-200 z-10;
+    background-image: linear-gradient(45deg, #808080 25%, transparent 25%),
+      linear-gradient(-45deg, #808080 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #808080 75%),
+      linear-gradient(-45deg, transparent 75%, #808080 75%);
+    background-size: 20px 20px;
+    background-position:
+      0 0,
+      0 10px,
+      10px -10px,
+      -10px 0px;
+  }
+}

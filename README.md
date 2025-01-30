@@ -22,18 +22,22 @@ A Chrome extension that adds beautiful animated gradient borders to any element 
 ## Installation
 
 ### From Source
+
 1. Clone the repository
+
 ```bash
 git clone https://github.com/phive151/hover-border-extension
 cd hover-border-extension
 ```
 
 2. Install dependencies
+
 ```bash
 pnpm install
 ```
 
 3. Build the extension
+
 ```bash
 pnpm run build
 ```
@@ -55,10 +59,12 @@ pnpm run build
 ## Development
 
 ### Prerequisites
+
 - Node.js (v14 or higher)
 - npm or pnpm
 
 ### Setup
+
 ```bash
 # Install dependencies
 pnpm install
@@ -71,6 +77,7 @@ pnpm run build
 ```
 
 ### Project Structure
+
 ```
 ├── src/
 │   ├── popup.css      # Extension popup styles

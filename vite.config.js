@@ -1,32 +1,37 @@
-import { defineConfig } from 'vite'
-import solid from 'vite-plugin-solid'
-import tailwindcss from '@tailwindcss/vite'
-import { crx } from '@crxjs/vite-plugin'
-import manifest from './manifest.json'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import { defineConfig } from "vite";
+import solidPlugin from "vite-plugin-solid";
+import tailwindcss from "@tailwindcss/vite";
+import { crx } from "@crxjs/vite-plugin";
+import manifest from "./manifest.json";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const __dirname = path.dirname( fileURLToPath( import.meta.url ) );
 
-export default defineConfig({
+export default defineConfig( {
   plugins: [
-    solid(),
     tailwindcss(),
-    crx({ manifest })
+    solidPlugin(),
+    crx(
+      { manifest }
+    )
   ],
   build: {
-    target: 'esnext',
+    target: "esnext",
     rollupOptions: {
       input: {
-        popup: ('@/popup.html')
-      }
-    }
+        popup: "@popup/popup.html",
+        options: "@options/options.html",
+      },
+    },
+    minify: false,
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-    }
-  }
-})
-
-
+      "@src": path.resolve( __dirname, "./src" ),
+      "@components": path.resolve( __dirname, "./src/components" ),
+      "@popup": path.resolve( __dirname, "./src/pages/popup" ),
+      "@options": path.resolve( __dirname, "./src/pages/options" ),
+    },
+  },
+} );

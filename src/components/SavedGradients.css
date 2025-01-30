@@ -1,0 +1,47 @@
+@import "tailwindcss";
+@plugin '@tailwindcss/typography';
+@plugin 'daisyui' {
+  themes: all;
+}
+
+@layer components {
+  .savedGradientsContainer {
+    @apply mt-4;
+  }
+
+  .gradientsList {
+    @apply list bg-base-100 rounded-box shadow-md;
+  }
+
+  .listHeader {
+    @apply p-4 pb-2 text-xs opacity-60 tracking-wide;
+  }
+
+  .listRow {
+    @apply hover:bg-base-200 cursor-pointer;
+  }
+
+  .gradientPreview {
+    @apply w-10 h-10 rounded-box;
+  }
+
+  .gradientInfo {
+    @apply flex-col;
+  }
+
+  .gradientName {
+    @apply text-sm;
+  }
+
+  .colorCount {
+    @apply text-xs opacity-60;
+  }
+
+  .deleteButton {
+    @apply btn btn-ghost btn-square btn-sm;
+  }
+}
+
+@theme {
+  --radius-box: 1rem;
+}
