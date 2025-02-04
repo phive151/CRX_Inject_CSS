@@ -7,138 +7,54 @@ const borderStyles = [
   {
     id: 1,
     name: "rainbow",
-    class: "border-animate-1",
-    bgColor: "bg-blue-600",
-    gradient: [
-      "rgba(255,0,0,1)",
-      "rgba(255,136,0,1)",
-      "rgba(255,255,0,1)",
-      "rgba(0,255,0,1)",
-      "rgba(0,255,255,1)",
-      "rgba(0,0,255,1)",
-      "rgba(255,0,255,1)",
-      "rgba(255,0,0,1)",
-    ],
-    duration: "3s",
-    css: `
-      .border-animate-1:hover::before {
-        opacity: 1;
-        background-image: conic-gradient(
-          from var(--angle),
-          rgba(255,0,0,1), rgba(255,136,0,1), rgba(255,255,0,1), 
-          rgba(0,255,0,1), rgba(0,255,255,1), rgba(0,0,255,1), 
-          rgba(255,0,255,1), rgba(255,0,0,1)
-        );
-        animation: rotate 3s linear infinite;
-      }
-    `,
+    displayName: "Rainbow",
+    class: "gradient-rainbow",
   },
   {
     id: 2,
     name: "neon",
-    class: "border-animate-2",
-    bgColor: "bg-purple-600",
-    gradient: ["#ff00ff", "#9500ff", "#00ffff", "#ff00ff"],
-    duration: "2s",
-    css: `
-      .border-animate-2:hover::before {
-        opacity: 1;
-        background-image: conic-gradient(
-          from var(--angle),
-          #ff00ff, #9500ff, #00ffff, #ff00ff
-        );
-        animation: rotate 2s linear infinite;
-      }
-    `,
+    displayName: "Neon",
+    class: "gradient-neon",
   },
   {
     id: 3,
     name: "cyber",
-    class: "border-animate-3",
-    bgColor: "bg-green-600",
-    gradient: ["#00ff00", "#006600", "#00ff00", "#99ff99"],
-    duration: "1s",
-    css: `
-      .border-animate-3:hover::before {
-        opacity: 1;
-        background-image: conic-gradient(
-          from var(--angle),
-          #00ff00, #006600, #00ff00, #99ff99
-        );
-        animation: rotate 4s linear infinite;
-      }
-    `,
+    displayName: "Cyber",
+    class: "gradient-cyber",
   },
   {
     id: 4,
     name: "fire",
-    class: "border-animate-4",
-    bgColor: "bg-red-600",
-    gradient: ["#ff0000", "#ff6600", "#ffcc00", "#ff0000"],
-    duration: "2.5s",
-    css: `
-      .border-animate-4:hover::before {
-        opacity: 1;
-        background-image: conic-gradient(
-          from var(--angle),
-          #ff0000, #ff6600, #ffcc00, #ff0000
-        );
-        animation: rotate 2.5s linear infinite;
-      }
-    `,
+    displayName: "Fire",
+    class: "gradient-fire",
   },
   {
     id: 5,
     name: "gold",
-    class: "border-animate-5",
-    bgColor: "bg-yellow-600",
-    gradient: ["#ffd700", "#ffa500", "#ffdb4d", "#ffd700"],
-    duration: "3.5s",
-    css: `
-      .border-animate-5:hover::before {
-        opacity: 1;
-        background-image: conic-gradient(
-          from var(--angle),
-          #ffd700, #ffa500, #ffdb4d, #ffd700
-        );
-        animation: rotate 3.5s linear infinite;
-      }
-    `,
+    displayName: "Gold",
+    class: "gradient-gold",
   },
   {
     id: 6,
     name: "ocean",
-    class: "border-animate-6",
-    bgColor: "bg-teal-600",
-    gradient: ["#00ffff", "#0099ff", "#0000ff", "#00ffff"],
-    duration: "3s",
-    css: `
-      .border-animate-6:hover::before {
-        opacity: 1;
-        background-image: conic-gradient(
-          from var(--angle),
-          #00ffff, #0099ff, #0000ff, #00ffff
-        );
-        animation: rotate 3s linear infinite;
-      }
-    `,
+    displayName: "Ocean",
+    class: "gradient-ocean",
   },
 ];
 
 const Popup = () => {
   const [activeButton, setActiveButton] = createSignal(null);
   const [message, setMessage] = createSignal("");
-  const [defaultStyle, setDefaultStyle] = createSignal("neon"); // Default to neon
+  const [defaultStyle, setDefaultStyle] = createSignal("neon");
   const storage = chrome.storage.local;
 
   const openOptions = () => {
     chrome.runtime.openOptionsPage();
   };
 
-  // Function to apply style by name
   const applyStyleByName = async (styleName) => {
     const style = borderStyles.find(
-      (s) => s.name.toLowerCase() === styleName.toLowerCase(),
+      (s) => s.name.toLowerCase() === styleName.toLowerCase()
     );
     if (style) {
       await injectStyle(style);
@@ -147,16 +63,13 @@ const Popup = () => {
   };
 
   onMount(async () => {
-    // Load default style preference
     const { defaultStyle: storedDefault } = await storage.get("defaultStyle");
     if (storedDefault) {
       setDefaultStyle(storedDefault);
     }
 
-    // Set up command listener for the keyboard shortcut
     chrome.commands.onCommand.addListener(async (command) => {
       if (command === "toggle-border-animation") {
-        console.log("toggle-border-animation");
         await applyStyleByName(defaultStyle());
       }
     });
@@ -225,18 +138,19 @@ const Popup = () => {
           visibility: visible;
         }
 
-        .border-box::after {
+        .border-box::after,
+        .border-box::before {
           content: '';
           position: absolute;
           inset: calc(-1 * ${borderWidth}px);
           border-radius: inherit;
           opacity: 1;
-          background: conic-gradient(
-            from var(--angle),
-            ${style.gradient.join(", ")}
-          );
-          animation: borderRotate ${animationSpeed}s linear infinite;
+          animation: var(--animate-rotate);
           padding: ${borderWidth}px;
+        }
+
+        .border-box::after {
+          background: var(--gradient-${style.name});
           -webkit-mask: 
             linear-gradient(#fff 0 0) content-box,
             linear-gradient(#fff 0 0);
@@ -249,17 +163,7 @@ const Popup = () => {
         }
 
         .border-box::before {
-          content: '';
-          position: absolute;
-          inset: calc(-1 * ${borderWidth}px);
-          border-radius: inherit;
-          opacity: 1;
-          background: conic-gradient(
-            from var(--angle),
-            ${style.gradient.join(", ")}
-          );
-          animation: borderRotate ${animationSpeed}s linear infinite;
-          padding: ${borderWidth}px;
+          background: var(--gradient-${style.name});
           filter: blur(20px) brightness(1.2) opacity(0.2);
         }
 
@@ -267,11 +171,6 @@ const Popup = () => {
           syntax: "<angle>";
           initial-value: 0deg;
           inherits: false;
-        }
-
-        @keyframes borderRotate {
-          from { --angle: 0deg }
-          to { --angle: 360deg }
         }
       `;
 
@@ -302,83 +201,46 @@ const Popup = () => {
                 existingBox.remove();
               }
 
-              // Create new border box
-              console.log("Creating new border box");
-              const borderBox = document.createElement("div");
-              borderBox.className = "border-box";
-              document.body.appendChild(borderBox);
+          const borderBox = document.createElement("div");
+          borderBox.className = "border-box";
+          document.body.appendChild(borderBox);
 
-              let currentElement = null;
-              let isHovering = false;
+          let currentElement = null;
+          let isHovering = false;
 
-              const updateBorderBox = (element) => {
-                if (!element || !isHovering) {
-                  debugMode &&
-                    console.log(
-                      "Skipping update - invalid element or not hovering",
-                    );
-                  return;
-                }
+          const updateBorderBox = (element) => {
+            if (!element || !isHovering) return;
 
-                try {
-                  const rect = element.getBoundingClientRect();
-                  const scrollX = window.scrollX || window.pageXOffset;
-                  const scrollY = window.scrollY || window.pageYOffset;
+            const rect = element.getBoundingClientRect();
+            const scrollX = window.scrollX || window.pageXOffset;
+            const scrollY = window.scrollY || window.pageYOffset;
 
-                  borderBox.style.left = `${rect.left + scrollX}px`;
-                  borderBox.style.top = `${rect.top + scrollY}px`;
-                  borderBox.style.width = `${rect.width}px`;
-                  borderBox.style.height = `${rect.height}px`;
-                  borderBox.style.borderRadius =
-                    getComputedStyle(element).borderRadius;
-                  borderBox.classList.add("visible");
+            borderBox.style.left = `${rect.left + scrollX}px`;
+            borderBox.style.top = `${rect.top + scrollY}px`;
+            borderBox.style.width = `${rect.width}px`;
+            borderBox.style.height = `${rect.height}px`;
+            borderBox.style.borderRadius = getComputedStyle(element).borderRadius;
+            borderBox.classList.add("visible");
+          };
 
-                  debugMode &&
-                    console.log("Border box updated:", {
-                      left: borderBox.style.left,
-                      top: borderBox.style.top,
-                      width: borderBox.style.width,
-                      height: borderBox.style.height,
-                    });
-                } catch (updateError) {
-                  console.error("Error updating border box:", updateError);
-                }
-              };
+          document.addEventListener("mouseover", (e) => {
+            isHovering = true;
+            currentElement = e.target;
+            if (currentElement === document.body || currentElement === document.documentElement) {
+              borderBox.classList.remove("visible");
+              return;
+            }
+            updateBorderBox(currentElement);
+          });
 
-              document.addEventListener("mouseover", (e) => {
-                isHovering = true;
-                currentElement = e.target;
-                debugMode &&
-                  console.log("Mouseover event:", {
-                    target: e.target.tagName,
-                    id: e.target.id,
-                    class: e.target.className,
-                  });
+          document.addEventListener("mouseout", () => {
+            isHovering = false;
+            borderBox.classList.remove("visible");
+          });
 
-                if (
-                  currentElement === document.body ||
-                  currentElement === document.documentElement
-                ) {
-                  borderBox.classList.remove("visible");
-                  return;
-                }
-                updateBorderBox(currentElement);
-              });
-
-              document.addEventListener("mouseout", () => {
-                debugMode && console.log("Mouseout event triggered");
-                isHovering = false;
-                borderBox.classList.remove("visible");
-              });
-
-              window.addEventListener(
-                "scroll",
-                () => {
-                  debugMode && console.log("Scroll event triggered");
-                  updateBorderBox(currentElement);
-                },
-                { passive: true },
-              );
+          window.addEventListener("scroll", () => {
+            updateBorderBox(currentElement);
+          }, { passive: true });
 
               window.addEventListener(
                 "resize",
@@ -417,7 +279,7 @@ const Popup = () => {
       setMessage("Style injected successfully!");
       console.log("Style injection completed successfully");
     } catch (error) {
-      console.error("[Popup] Style injection failed:", error);
+      console.error("Style injection failed:", error);
       setMessage(`Failed to inject style: ${error.message}`);
     } finally {
       setTimeout(() => setMessage(""), 3000);
@@ -508,27 +370,21 @@ const Popup = () => {
   };
 
   return (
-    <div data-theme="cupcake" class="popup-container">
-      <div class="navbar px-4 mb-2">
-        <div class="flex-1">
-          <h2 class="max-w-prose text-xl font-bold text-base-content">
-            Border Animation
-          </h2>
-        </div>
-        <div class="flex-none">
-          <button
-            class="btn btn-ghost btn-circle"
-            onClick={openOptions}
-            title="Settings"
-          >
-            <FaSolidGear size={24} color="teal" />
-          </button>
-        </div>
+    <div class="popup-base">
+      <div class="flex items-center justify-between px-4 py-2">
+        <h2 class="text-xl font-bold">Border Animation</h2>
+        <button
+          class="btn btn-ghost btn-circle"
+          onClick={openOptions}
+          title="Settings"
+        >
+          <FaSolidGear size={24} class="text-teal-600" />
+        </button>
       </div>
 
       {message() && (
-        <div class="alert-container">
-          <div role="alert" class="alert alert-info alert-dash">
+        <div class="px-4 mb-4">
+          <div role="alert" class="alert alert-info shadow-lg">
             <HiOutlineInformationCircle size={24} />
             <span>{message()}</span>
           </div>
@@ -537,10 +393,10 @@ const Popup = () => {
 
       <div class="divider px-4">Select Style</div>
 
-      <div class="button-grid">
+      <div class="grid grid-cols-2 gap-4 p-4">
         {borderStyles.map((style) => (
           <button
-            class={`btn btn-${style.name.toLowerCase()} px-4 ${
+            class={`gradient-border btn ${style.class} ${
               activeButton() === style.id ? "active" : ""
             }`}
             onMouseEnter={() => setActiveButton(style.id)}
@@ -556,8 +412,8 @@ const Popup = () => {
                 : ""
             }`}
           >
-            <div class="text-base-content relative">
-              {style.name}
+            <div class="relative">
+              {style.displayName}
               {defaultStyle() === style.name.toLowerCase() && (
                 <div class="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full" />
               )}
@@ -568,7 +424,7 @@ const Popup = () => {
 
       <div class="divider px-4">Actions</div>
 
-      <div class="reset-button-container">
+      <div class="px-4 pb-4">
         <button class="btn btn-error btn-block gap-2" onClick={removeStyle}>
           <svg
             xmlns="http://www.w3.org/2000/svg"

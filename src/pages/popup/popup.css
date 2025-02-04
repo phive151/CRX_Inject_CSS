@@ -1,6 +1,113 @@
 @import "tailwindcss";
 @plugin "daisyui" {
   themes: all;
+
+@theme {
+  /* Base theme variables */
+  --radius-field: 0.5rem;
+  --duration-normal: 3s;
+  --duration-fast: 2s;
+  --duration-faster: 1s;
+  
+  /* Animation properties */
+  --animate-rotate: rotate var(--duration-normal) linear infinite;
+  
+  /* Gradient presets */
+  --gradient-rainbow: oklch(0.7 0.25 0) oklch(0.7 0.25 60) oklch(0.7 0.25 120) 
+                     oklch(0.7 0.25 180) oklch(0.7 0.25 240) oklch(0.7 0.25 300) 
+                     oklch(0.7 0.25 360);
+                     
+  --gradient-neon: oklch(0.7 0.3 300) oklch(0.7 0.3 240) oklch(0.7 0.3 180) 
+                  oklch(0.7 0.3 300);
+                  
+  --gradient-cyber: oklch(0.7 0.2 120) oklch(0.4 0.2 120) oklch(0.7 0.2 120) 
+                   oklch(0.85 0.2 120);
+                   
+  --gradient-fire: oklch(0.7 0.25 30) oklch(0.7 0.25 40) oklch(0.7 0.25 60) 
+                  oklch(0.7 0.25 30);
+                  
+  --gradient-gold: oklch(0.85 0.1 80) oklch(0.75 0.15 60) oklch(0.85 0.1 70) 
+                  oklch(0.85 0.1 80);
+                  
+  --gradient-ocean: oklch(0.7 0.2 200) oklch(0.7 0.2 220) oklch(0.7 0.2 240) 
+                   oklch(0.7 0.2 200);
+
+  /* Base dimensions */
+  --size-popup-width: 400px;
+  --size-popup-height: 600px;
+
+  @keyframes rotate {
+    from { --angle: 0deg; }
+    to { --angle: 360deg; }
+  }
+}
+
+/* Base layout utilities */
+@layer utilities {
+  .popup-base {
+    width: var(--size-popup-width);
+    min-height: var(--size-popup-height);
+  }
+
+  .gradient-border {
+    position: relative;
+    isolation: isolate;
+    overflow: visible;
+  }
+
+  .gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: calc(var(--radius-field) + 3px);
+    background: conic-gradient(from var(--angle), var(--gradient-current, var(--gradient-rainbow)));
+    animation: var(--animate-rotate);
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: -1;
+    padding: 3px;
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: exclude;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
+
+  .gradient-border::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: calc(var(--radius-field) + 6px);
+    background: conic-gradient(from var(--angle), var(--gradient-current, var(--gradient-rainbow)));
+    animation: var(--animate-rotate);
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: -2;
+    filter: blur(10px);
+  }
+
+  .gradient-border:hover::before,
+  .gradient-border:hover::after {
+    opacity: 1;
+  }
+
+  /* Gradient variants */
+  .gradient-rainbow { --gradient-current: var(--gradient-rainbow); }
+  .gradient-neon { --gradient-current: var(--gradient-neon); }
+  .gradient-cyber { --gradient-current: var(--gradient-cyber); }
+  .gradient-fire { --gradient-current: var(--gradient-fire); }
+  .gradient-gold { --gradient-current: var(--gradient-gold); }
+  .gradient-ocean { --gradient-current: var(--gradient-ocean); }
+}
+
+/* Property definitions */
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
 }
 
 @layer components {
@@ -116,26 +223,4 @@
     --duration: 3s;
     --transparency-spread: 90%;
   }
-}
-@property --angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
-
-@keyframes rotate {
-  from {
-    --angle: 0deg;
-  }
-  to {
-    --angle: 360deg;
-  }
-}
-
-.alert-container {
-  @apply px-4 mb-4;
-}
-
-.alert-dash {
-  @apply shadow-lg;
 }
