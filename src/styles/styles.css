@@ -1,0 +1,15 @@
+@import "tailwindcss";
+@import "daisyui";
+
+@theme {
+	--angle: 0deg;
+	
+}
+
+.animate-border-gradient {
+    animation: rotate 3s linear infinite;
+}
+
+@keyframes rotate {
+	from { --angle: 0deg; }
+    to { --angle: 360deg; }

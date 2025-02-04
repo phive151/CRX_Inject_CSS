@@ -1,26 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="cupcake">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Html Form</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5.0.0-beta.4/daisyui.css" rel="stylesheet" type="text/css" />
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link href="./index.css" rel="stylesheet">
-  <title>Gradient Border Animation</title>
+  <style>
+    @theme {
+      --angle:
+      --animate-rotate: rotate 3s linear infinite;
+
+      @keyframes rotate {
+        0%,
+        100% { --angle: 360deg; }
+      }
+    };
+  </style>
 </head>
 
-<body>
-  <div class="container flex flex-col items-center justify-center bg-zinc-700">
-    <div type="card" class="content relative group p-[3px] overflow-hidden rounded-lg">
-      <!-- Animated gradient background -->
-      <div class="absolute inset-0 gradient-border">
-      </div>
+<body class="min-h-screen grid place-items-center bg-slate-950">
+  <div class="relative group p-[1px] overflow-hidden rounded-lg">
+    <!-- Animated gradient background -->
+    <div class="absolute inset-[-1px] bg-linear-to-bl/increasing from-red-500 to-purple-500 animate-spin">
+    </div>
 
-      <!-- Content container -->
-      <div class="relative bg-slate-900 rounded-lg p-6 text-white">
-        <h1 class="text-2xl font-bold mb-2">Gradient Border</h1>
-        <p class="text-slate-400">This element has an animated gradient border</p>
-      </div>
+    <!-- Content container -->
+    <div class="relative bg-slate-900 rounded-lg p-6 text-white">
+      <h1 class="text-2xl font-bold mb-2">Gradient Border</h1>
+      <p class="text-slate-400">This element has an animated gradient border</p>
     </div>
   </div>
 </body>

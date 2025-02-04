@@ -1,13 +1,13 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@plugin 'daisyui@beta';
 
 @theme {
-    --gradient-border: conic-gradient(from 0deg, transparent 25%, #3b82f6, transparent 75%);
 
-    --animation-border-spin: spin 3s linear infinite;
+    --angle: 0deg;
+    --animate-rotate: rotate 3s linear infinite;
 
-    @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
+    @keyframes rotate {
+        0%,
+        100% { --angle: 360deg; }
     }
 }
-
